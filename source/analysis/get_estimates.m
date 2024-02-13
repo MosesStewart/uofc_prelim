@@ -4,14 +4,14 @@ dvars = readtable('../../output/derived/dependent_vars.csv');
 lat_lon = readtable('../../output/derived/lat_lon.csv');
 spec1 = readtable('../../output/derived/first_specification.csv');
 spec2 = readtable('../../output/derived/second_specification.csv');
-panelvars = ones([height(dvars), 1]);
+panelvars = transpose(1:height(dvars)); %ones([height(dvars), 1]);
 years = 2020 * ones([height(dvars), 1]);
 output = cell2table(cell(width(spec2), 0), 'RowNames', spec2.Properties.VariableNames);
 output(:, 'varnames') = transpose(spec2.Properties.VariableNames);
 
 loc = lat_lon{:,:};
-locCutoff = 65;             % From quoara on furthest distance across NYC
-lagCutoff = 173;
+locCutoff = 65;             % From quora on furthest distance across NYC
+lagCutoff = 0;
 
 for week = 0:1
     for dv = {'ppc', 'sp'}
@@ -32,4 +32,4 @@ for week = 0:1
     end
 end
 
-writetable(output, '../../output/analysis/raw_results.csv')
+writetable(output, '../../output/analysis/spatial_raw_results.csv')

@@ -7,8 +7,8 @@ def main():
                     'share_cat7': 'share_fire', 'share_cat8': 'share_police', 'share_cat9': 'share_reg_essential', 
                     'share_cat10': 'share_reg_nonessential', 'share_cat11': 'share_industrial', 'share_cat12': 'share_tec_essential',
                     'share_cat13': 'share_transportation'}
-    init_keep = ['log_density', 'share_hispanic', 'share_white', 'share_black', 'share_asian', 'share_below_20', 'share_20_40', 'share_40_60', 
-            'share_above_60', 'log_commute_time', 'household_size', 'share_male']
+    init_keep = ['log_density', 'log_commute_time', 'log_household_size', 'share_male']
+    trans_keep = ['share_hispanic', 'share_black', 'share_asian', 'share_20_40', 'share_40_60', 'share_above_60']
     weeks = [(404, 410), (516, 522)]
     # postive_per_capita, share_positive
     data = pd.read_stata(f'{indir}/metricsgame2.dta')
@@ -20,6 +20,8 @@ def main():
     init_data = pd.DataFrame({'bias': np.ones((data.shape[0]))})
     for col in init_keep:
         init_data[col] = data[col].values
+    for col in trans_keep:
+        init_data[col] = data[col].values/100
     init_data['log_mean_income'] = np.log(data['mean_income'].values)
     init_data['share_public_trans'] = data['public'].values
     init_data['uninsured'] = data['uninsured'].values
