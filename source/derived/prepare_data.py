@@ -12,17 +12,16 @@ def main():
     weeks = [(404, 410), (516, 522)]
     # postive_per_capita, share_positive
     data = pd.read_stata(f'{indir}/metricsgame2.dta')
-
+    data = data.loc[:173, :]
     loc_data = pd.DataFrame({'lat': data['lat'], 'lon': data['lng']})
     loc_data.to_csv(f'{outdir}/lat_lon.csv', index = False)
 
-    init_keep = ['log_density', 'share_hispanic', 'share_white', 'share_black', 'share_asian', 'share_below_20', 'share_20_40', 'share_40_60', 
-                'share_above_60', 'log_commute_time', 'household_size', 'share_male']
-    init_data = pd.DataFrame({'uninsured': data['uninsured']})
+    init_data = pd.DataFrame({'bias': np.ones((data.shape[0]))})
     for col in init_keep:
         init_data[col] = data[col]
-    init_data['log_mean_income'] = np.log(data['mean_incomce'].values)
+    init_data['log_mean_income'] = np.log(data['mean_income'].values)
     init_data['share_public_trans'] = data['public']
+    init_data['uninsured'] = data['uninsured']
     init_data.to_csv(f'{outdir}/first_specification.csv', index = False)
 
     all_data = init_data
@@ -30,17 +29,17 @@ def main():
         all_data[col_rename[col]] = data[col]
     all_data.to_csv(f'{outdir}/second_specification.csv', index = False)
 
-    dependent_vars = pd.DataFrame(columns = ['week1_ppc', 'week1_sp', 'week2_ppc', 'week2_sp'])
-    for i in range(weeks):
+    dependent_vars = pd.DataFrame(columns = ['week0_ppc', 'week0_sp', 'week1_ppc', 'week1_sp'])
+    for i in range(len(weeks)):
         week = weeks[i]
         week_ppc = data[f'positive_per_capita_0{week[0]}'].values
         week_share_pos = data[f'share_positive_0{week[0]}'].values
         for day in range(week[0] + 1, week[1] + 1):
-            if day == 406:
+            if day == 406 or day == 520:
                 pass
             else:
-                week_ppc = np.concatenate([week_ppc, data[f'positive_per_capita_0{day}'].values], axis = 1)
-                week_share_pos = np.concatenate([week_share_pos, data[f'share_positive_0{day}'].values], axis = 1)
+                week_ppc = np.column_stack([week_ppc, data[f'positive_per_capita_0{day}'].values])
+                week_share_pos = np.column_stack([week_share_pos, data[f'share_positive_0{day}'].values])
         dependent_vars[f'week{i}_ppc'] = np.mean(week_ppc, axis = 1)
         dependent_vars[f'week{i}_sp'] = np.mean(week_share_pos, axis = 1)
 
