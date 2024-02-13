@@ -12,21 +12,22 @@ def main():
     weeks = [(404, 410), (516, 522)]
     # postive_per_capita, share_positive
     data = pd.read_stata(f'{indir}/metricsgame2.dta')
-    data = data.loc[:173, :]
-    loc_data = pd.DataFrame({'lat': data['lat'], 'lon': data['lng']})
-    loc_data.to_csv(f'{outdir}/lat_lon.csv', index = False)
+    data = data.dropna()
 
+    loc_data = pd.DataFrame({'lat': data['lat'].values, 'lon': data['lng'].values})
+    loc_data.to_csv(f'{outdir}/lat_lon.csv', index = False)
+    
     init_data = pd.DataFrame({'bias': np.ones((data.shape[0]))})
     for col in init_keep:
-        init_data[col] = data[col]
+        init_data[col] = data[col].values
     init_data['log_mean_income'] = np.log(data['mean_income'].values)
-    init_data['share_public_trans'] = data['public']
-    init_data['uninsured'] = data['uninsured']
+    init_data['share_public_trans'] = data['public'].values
+    init_data['uninsured'] = data['uninsured'].values
     init_data.to_csv(f'{outdir}/first_specification.csv', index = False)
 
     all_data = init_data
     for col in col_rename:
-        all_data[col_rename[col]] = data[col]
+        all_data[col_rename[col]] = data[col].values
     all_data.to_csv(f'{outdir}/second_specification.csv', index = False)
 
     dependent_vars = pd.DataFrame(columns = ['week0_ppc', 'week0_sp', 'week1_ppc', 'week1_sp'])
