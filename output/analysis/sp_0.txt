@@ -1,0 +1,32 @@
+\begin{tabular}{lllll}
+\toprule
+Dep. Variable &  - Spec. 1 Coeff -  & SE 1 &  - Spec. 2 Coeff -  & SE 2 \\
+\midrule
+Log Density & 0.022*** & (0.006) & 0.017*** & (0.007) \\
+Log Commute Time & 0.037 & (0.051) & -0.062* & (0.052) \\
+Log Household Size & 0.205*** & (0.047) & 0.134*** & (0.050) \\
+Share Male & -0.096 & (0.164) & 0.167 & (0.154) \\
+Share Hispanic & -0.041* & (0.030) & -0.046* & (0.029) \\
+Share Black & 0.181*** & (0.053) & 0.175*** & (0.054) \\
+Share Asian & 0.385*** & (0.058) & 0.387*** & (0.056) \\
+Share 20-40 & 8.281 & (13.644) & -10.905 & (12.688) \\
+Share 40-60 & -18.698 & (19.403) & -29.458** & (16.963) \\
+Share $>$60 & 6.619 & (12.653) & -6.636 & (13.573) \\
+Log Mean Income & -0.077*** & (0.017) & -0.034* & (0.027) \\
+Share Pub. Trans. & -0.033 & (0.044) & -0.030 & (0.046) \\
+Uninsured & 0.111 & (0.169) & 0.089 & (0.156) \\
+Essential - Pro & . & . & 0.230* & (0.196) \\
+Nonessential - Pro & . & . & 0.148* & (0.117) \\
+Science & . & . & -1.369* & (1.024) \\
+Legal & . & . & -0.638* & (0.427) \\
+Health Practice & . & . & -0.036 & (0.369) \\
+Health Other & . & . & 0.883*** & (0.232) \\
+Firefighters & . & . & 2.498*** & (0.696) \\
+Law Enforcement & . & . & -0.003 & (0.655) \\
+Essential - Service & . & . & 0.522** & (0.294) \\
+Nonessential - Service & . & . & 0.145 & (0.446) \\
+Industrial & . & . & 0.087 & (0.239) \\
+Essential - Tech & . & . & -1.633*** & (0.647) \\
+Transportation & . & . & 1.107*** & (0.402) \\
+\bottomrule
+\end{tabular}
