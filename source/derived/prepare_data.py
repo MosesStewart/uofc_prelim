@@ -8,7 +8,7 @@ def main():
                     'share_cat10': 'Nonessential - Service', 'share_cat11': 'Industrial', 'share_cat12': 'Essential - Tech',
                     'share_cat13': 'Transportation'}
     init_keep = {'log_density': 'Log Density', 'log_commute_time': 'Log Commute Time', 'log_household_size': 'Log Household Size', 'share_male': 'Share Male'}
-    trans_keep = {'share_hispanic': 'Share Hispanic', 'share_black': 'Share Black', 'share_asian': 'Share Asian', 'share_20_40': 'Share 20-40', 'share_40_60': 'Share 40-60', 'share_above_60': 'Share >60'}
+    trans_keep = {'share_hispanic': 'Share Hispanic', 'share_black': 'Share Black', 'share_asian': 'Share Asian', 'share_20_40': 'Share 20-40', 'share_40_60': 'Share 40-60', 'share_above_60': 'Share $>$60'}
     weeks = [(404, 410), (516, 522)]
     # postive_per_capita, share_positive
     data = pd.read_stata(f'source/raw/metricsgame2.dta')
@@ -22,9 +22,9 @@ def main():
         init_data[init_keep[col]] = data[col].values
     for col in trans_keep:
         init_data[trans_keep[col]] = data[col].values/100
-    init_data['log_mean_income'] = np.log(data['mean_income'].values)
-    init_data['share_public_trans'] = data['public'].values
-    init_data['uninsured'] = data['uninsured'].values
+    init_data['Log Mean Income'] = np.log(data['mean_income'].values)
+    init_data['Share Pub. Trans.'] = data['public'].values
+    init_data['Uninsured'] = data['uninsured'].values
     init_data.to_csv(f'{outdir}/first_specification.csv', index = False)
 
     all_data = init_data
