@@ -2,16 +2,16 @@ import numpy as np, pandas as pd
 
 def main():
     indir, outdir = 'source/raw', 'output/derived'
-    col_rename = {'share_cat1': 'share_pro_essential', 'share_cat2': 'share_pro_nonessential', 'share_cat3': 'share_science', 
-                    'share_cat4': 'share_legal', 'share_cat5': 'share_caregiver', 'share_cat6': 'share_health',
-                    'share_cat7': 'share_fire', 'share_cat8': 'share_police', 'share_cat9': 'share_reg_essential', 
-                    'share_cat10': 'share_reg_nonessential', 'share_cat11': 'share_industrial', 'share_cat12': 'share_tec_essential',
-                    'share_cat13': 'share_transportation'}
-    init_keep = ['log_density', 'log_commute_time', 'log_household_size', 'share_male']
-    trans_keep = ['share_hispanic', 'share_black', 'share_asian', 'share_20_40', 'share_40_60', 'share_above_60']
+    col_rename = {'share_cat1': 'Essential - Pro', 'share_cat2': 'Nonessential - Pro', 'share_cat3': 'Science', 
+                    'share_cat4': 'Legal', 'share_cat5': 'Health Practice', 'share_cat6': 'Health Other',
+                    'share_cat7': 'Firefighters', 'share_cat8': 'Law Enforcement', 'share_cat9': 'Essential - Service', 
+                    'share_cat10': 'Nonessential - Service', 'share_cat11': 'Industrial', 'share_cat12': 'Essential - Tech',
+                    'share_cat13': 'Transportation'}
+    init_keep = {'log_density': 'Log Density', 'log_commute_time': 'Log Commute Time', 'log_household_size': 'Log Household Size', 'share_male': 'Share Male'}
+    trans_keep = {'share_hispanic': 'Share Hispanic', 'share_black': 'Share Black', 'share_asian': 'Share Asian', 'share_20_40': 'Share 20-40', 'share_40_60': 'Share 40-60', 'share_above_60': 'Share >60'}
     weeks = [(404, 410), (516, 522)]
     # postive_per_capita, share_positive
-    data = pd.read_csv(f'source/derived/datawithdog.csv')
+    data = pd.read_stata(f'source/raw/metricsgame2.dta')
     data = data.dropna()
 
     loc_data = pd.DataFrame({'lat': data['lat'].values, 'lon': data['lng'].values})
@@ -19,13 +19,12 @@ def main():
     
     init_data = pd.DataFrame({'bias': np.ones((data.shape[0]))})
     for col in init_keep:
-        init_data[col] = data[col].values
+        init_data[init_keep[col]] = data[col].values
     for col in trans_keep:
-        init_data[col] = data[col].values/100
+        init_data[trans_keep[col]] = data[col].values/100
     init_data['log_mean_income'] = np.log(data['mean_income'].values)
     init_data['share_public_trans'] = data['public'].values
     init_data['uninsured'] = data['uninsured'].values
-    init_data['dogNum'] = data['NumDogs'].values
     init_data.to_csv(f'{outdir}/first_specification.csv', index = False)
 
     all_data = init_data
