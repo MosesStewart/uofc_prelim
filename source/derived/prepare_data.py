@@ -11,7 +11,7 @@ def main():
     trans_keep = ['share_hispanic', 'share_black', 'share_asian', 'share_20_40', 'share_40_60', 'share_above_60']
     weeks = [(404, 410), (516, 522)]
     # postive_per_capita, share_positive
-    data = pd.read_stata(f'{indir}/metricsgame2.dta')
+    data = pd.read_csv(f'source/derived/datawithdog.csv')
     data = data.dropna()
 
     loc_data = pd.DataFrame({'lat': data['lat'].values, 'lon': data['lng'].values})
@@ -25,6 +25,7 @@ def main():
     init_data['log_mean_income'] = np.log(data['mean_income'].values)
     init_data['share_public_trans'] = data['public'].values
     init_data['uninsured'] = data['uninsured'].values
+    init_data['dogNum'] = data['DogNum'].values
     init_data.to_csv(f'{outdir}/first_specification.csv', index = False)
 
     all_data = init_data
