@@ -25,7 +25,7 @@ def main():
     init_data['log_mean_income'] = np.log(data['mean_income'].values)
     init_data['share_public_trans'] = data['public'].values
     init_data['uninsured'] = data['uninsured'].values
-    init_data['dogNum'] = data['DogNum'].values
+    init_data['dogNum'] = data['NumDogs'].values
     init_data.to_csv(f'{outdir}/first_specification.csv', index = False)
 
     all_data = init_data
